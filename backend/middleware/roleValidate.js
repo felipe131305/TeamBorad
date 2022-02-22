@@ -1,5 +1,6 @@
 import role from "../models/role.js";
 
+
 const existingRole = async (req,res,next) => {
   const roleId = await role.findOne({ name: "user" });
   if (!roleId)
@@ -8,4 +9,11 @@ const existingRole = async (req,res,next) => {
   next();
 };
 
-export default { existingRole };
+const validateRole = async (req,res,next) => {
+  const existinRole = await role.findOne({ name: req.body.name });
+  if (existinRole)
+    return res.status(400).send({ message: "The role is already registered" });
+next();
+};
+
+export default { existingRole,validateRole };

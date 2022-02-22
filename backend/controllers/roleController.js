@@ -7,12 +7,19 @@ const registerRole = async (req, res) => {
   let roleSchema = new role({
     name: req.body.name,
     description: req.body.description,
-    dbStatus : true,
+    dbStatus: true,
   });
 
   let result = await roleSchema.save();
   if (!result)
     return res.status(500).send({ message: "Failed to register role" });
-  res.status(200).send({ result });
+  return res.status(200).send({ result });
 };
-export default { registerRole };
+
+const listRole = async (req, res) => {
+  let roles = await role.find();
+  if (roles.length === 0)
+    return res.status(400).send({ message: "no search roles" });
+  return res.status(200).send({ roles });
+};
+export default { registerRole, listRole };
